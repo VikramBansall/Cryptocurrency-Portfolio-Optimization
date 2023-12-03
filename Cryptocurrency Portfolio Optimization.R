@@ -10,10 +10,10 @@ library(tidyquant)
 library(dendextend)
 library(PortfolioAnalytics)
 
-# View the list of cryptocurrencies
+#list of cryptocurrencies
 View(crypto_list())
 
-# Retrieve historical data for a single cryptocurrency
+#historical data for a single cryptocurrency
 cryptocurrency <- crypto_history(limit = 1)
 View(cryptocurrency)
 summary(cryptocurrency)
@@ -26,7 +26,7 @@ cryptocurrency %>%
   ggplot() + geom_line(aes(timestamp, close))
 
 
-# Select the top 100 cryptocurrencies for Portfolio
+# top 100 cryptocurrencies for Portfolio
 top100marcap <- crypto_list() %>% arrange(rank) %>% slice(1:100)
 top100prices <- crypto_history(top100marcap)
 
@@ -124,21 +124,21 @@ cutree(hc, k = number_clusters) %>% data.frame() %>%
 rect.hclust(hc, 4)
 ###############################################
 
-# Extract a specific cluster and a random stock from that cluster
-stock_cluster <- cutree(hc, k = 5) %>%
+# Extract a specific cluster and a random crypto from that cluster
+crypto_cluster <- cutree(hc, k = 5) %>%
   data.frame() %>%
   rename(cluster = 1) %>%
   mutate(Company = rownames(.))
-randomstock <- stock_cluster %>%
+randomstock <- crypto_cluster %>%
   group_by(cluster) %>%
   sample_n(size = 1)
 target_cluster <- 2
-individual_cluster <- stock_cluster %>%
+individual_cluster <- crypto_cluster %>%
   filter(cluster == target_cluster) %>%
   sample_n(size = 1)
 individual_cluster
 
-# Select stocks for Portfolio 1 and Portfolio 2
+# Select cryptos for Portfolio 1 and Portfolio 2
 crypto_portfolio_1 <- crypto_portfolio %>%
   filter(symbol %in% randomstock$Company) %>%
   arrange(timestamp, symbol) %>%
