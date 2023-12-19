@@ -129,7 +129,7 @@ crypto_cluster <- cutree(hc, k = 5) %>%
   data.frame() %>%
   rename(cluster = 1) %>%
   mutate(Company = rownames(.))
-randomstock <- crypto_cluster %>%
+randomcluster <- crypto_cluster %>%
   group_by(cluster) %>%
   sample_n(size = 1)
 target_cluster <- 2
@@ -140,7 +140,7 @@ individual_cluster
 
 # Select cryptos for Portfolio 1 and Portfolio 2
 crypto_portfolio_1 <- crypto_portfolio %>%
-  filter(symbol %in% randomstock$Company) %>%
+  filter(symbol %in% randomcluster$Company) %>%
   arrange(timestamp, symbol) %>%
   group_by(symbol) %>%
   mutate(closing_price = close/lag(close, 1) - 1) %>%
